@@ -408,7 +408,8 @@ the design, and timing constraints.
  Openlane Directory structure in detail 
 
 
-<img width="699" height="578" alt="image" src="https://github.com/user-attachments/assets/18b83f9f-a0c7-434d-be50-9d5a8b136f8d" />
+<img width="1152" height="648" alt="WhatsApp Image 2026-09-12 at 12 34 24 AM" src="https://github.com/user-attachments/assets/ae10025d-76df-4970-8331-b3b45b7175e5" />
+
 
  
 
@@ -428,7 +429,6 @@ Density libs.tech has files specific for the tool (klayout,netgen,magic...)
 Openlane has multiple designs and we need to work on picorv32a inside a specific 
 design folder there is a config.tcl which has the default settings on OpenLANE.
 
-<img width="686" height="526" alt="image" src="https://github.com/user-attachments/assets/27b908e0-bedd-4b0e-beae-f4b2c0e030a8" />
 
 
 
@@ -439,7 +439,6 @@ OpenLane/designs/[design]/ config.tcl in OpenLane/designs/[design]/ default valu
 OpenLane/configuration/
 
 
-<img width="773" height="127" alt="image" src="https://github.com/user-attachments/assets/3f75c84f-7a35-4c9e-9a26-0ba00d53de4b" />
 
 
 Setup the design stage for the flow and to begin with synthesis of a design 
@@ -465,8 +464,14 @@ scripts (for technology mapping) and openSTA.
 
 Results after synthesis is as follows.
 
+<img width="1152" height="648" alt="WhatsApp Image 2026-09-12 at 12 34 28 AM" src="https://github.com/user-attachments/assets/4f0b48b4-dd56-4501-b238-d907ff00c660" />
+
+<img width="1152" height="648" alt="WhatsApp Image 2026-09-12 at 12 34 29 AM" src="https://github.com/user-attachments/assets/0dba46ca-7366-4822-a20f-b399c836bd33" />
 
 
+
+
+<img width="1152" height="648" alt="WhatsApp Image 2026-09-12 at 12 34 30 AM" src="https://github.com/user-attachments/assets/529a1cd2-179a-47d2-a6bd-943271756fcb" />
 
 
 
@@ -719,6 +724,7 @@ APR tool does not place any cell on the pin locations.
 1. Setting configuration variables: Before running floorplan, the configuration variables or 
 switches must be set. These are present in openlane/configuration directory:
 
+<img width="1152" height="648" alt="WhatsApp Image 2026-09-12 at 12 34 36 AM" src="https://github.com/user-attachments/assets/f38f8f77-8670-4c14-9aeb-fbe26c9791c4" />
 
 
 The README.md consists of all configuration variables for every stage and the tcl files contain the 
@@ -757,7 +763,8 @@ Command: magic -T
 picorv32a.floorplan.def &
 
 
-<img width="577" height="333" alt="image" src="https://github.com/user-attachments/assets/76c3b188-c047-4c18-a6d8-cb6e5e7f885f" />
+<img width="578" height="330" alt="image" src="https://github.com/user-attachments/assets/fddfdc63-5896-416a-a462-f1b653c10e5d" />
+
 
 
 Press "s" to select whole die then press "v" to center the view 
