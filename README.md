@@ -913,8 +913,815 @@ o Mask 14 is for second contact hole
 o Mask 15 is for second Aluminum contact layer 
 o Mask 16 is for making contact to topmost layer
 
-# Lab introduction to Sky130 basic layers layout and LEF using 
-inverter 
+# Lab introduction to Sky130 basic layers layout and LEF using inverter
+
+<img width="772" height="476" alt="image" src="https://github.com/user-attachments/assets/fcf0d307-8e5a-4d39-8be3-b52b27351d54" />
+
+In sky130A, the first layer is local-interconnect layer or local-i and then the m1, m2 and so on. Power 
+and Ground lines are in m1. When polysilicon crosses ndiffusion the it is NMOS and if polysilicon 
+crosses pdiffusion then it is PMOS is created. The output of the layout is the LEF file. It is used by the 
+router in APR to get the location of standard cell pins to route them properly. So it is basically the 
+abstract form of layout of a standard cell. 
+Commands in tkcon window for spice extraction of the custom inverter layout: 
+1. extract all 
+2. ext2spice cthresh 0 rthresh 0 --> this extracts the parasitic information 
+3. ext2spice
+
+Sky130 Tech File Labs
+1. Lab steps to create final SPICE deck using Sky130 tech 
+The default SPICE deck file using Sky130 is as seen in the previous section. Now we modify 
+the file to plot a transient response. The final SPICE deck file is as below.
+
+
+Command to load spice file for simulation in ngspice: 
+ngspice sky130A_inv.spice 
+Generate a graph using: 
+plot y vs time a
+2. Lab steps to characterize inverter using sky130 model files
+<img width="776" height="398" alt="image" src="https://github.com/user-attachments/assets/0b0f33f2-e5cf-4895-80e1-4d329724d82f" />
+Using the above transient plot, we will now characterize the slew rate and propagation delay: 
+Maximum voltage = 3.3V 80% of maximum voltage = 2.64V 20% of maximum voltage = 
+0.64V 50% of maximum voltage = 1.65V 
+o Rise Transition (output transition time from 20% to 80%): 
+▪ Tr_r = 2.20278ns - 2.15946ns = 0.04332ns 
+image
+o Fall Transition (output transition time from 80% to 20%): 
+▪ Tr_f = 4.06818ns - 4.04073ns = 0.02745ns 
+image
+o Rise Delay (delay between 50% of input and 50% of output) that is time taken for 
+output to rise to 50% and time taken for input to fall to 50%: 
+▪ D_r = 2.18381ns - 2.15003ns = 0.03378ns
+o Fall Delay (delay between 50% of input and 50% of output) that is time taken for 
+output to fall to 50% and time taken for input to rise to 50%: 
+▪ D_f = 4.05402ns - 4.0501ns = 0.00392ns
+
+3. Lab introduction to Sky130 pdk's and steps to download labs 
+Commands to download and view the corrupted skywater process magic tech file and other 
+files to perform drc corrections: 
+o Command to download the lab files: wget 
+http://opencircuitdesign.com/open_pdks/archive/drc_tests.tgz 
+o Extract it: tar xfz drc_tests.tgz 
+o Change directory into the lab folder: cd drc/drc_tests 
+o List all files: ls -al 
+o Command to open magic tool: magic -d XR
+
+4. Lab introduction to Magic and steps to load Sky130 tech-rules 
+Useful websites: 
+Magic Technology File Format Manual - This site explains about tech files. All technology 
+specific information comes from a technology file. This file includes information as layer 
+types, electrical connectivity, design rules, rules for mask generation, rules for extracting 
+netlists etc. 
+Rules for SkyWater SKY130 PDK 
+Steps: 
+o Open magic with met3.mag as input
+
+<img width="487" height="263" alt="image" src="https://github.com/user-attachments/assets/e74d8692-3160-4a0d-93e3-f8c48799cc5b" />
+
+o In this view, we see a number of independent layouts containing some DRC errors 
+
+
+5. Lab exercise to fix poly.9 error in Sky130 tech-file
+   In tkcon window: load poly
+   
+
+
+o Let's look at rule poly.9 As described in Rules for SkyWater SKY130 PDK, Poly resistor 
+spacing to poly or spacing (no overlap) to diff/tap should be atleast 0.48um.
+<img width="565" height="461" alt="image" src="https://github.com/user-attachments/assets/03131778-2507-4973-82ed-40b23197fafe" />
+That's not the case here, so we have to fix the tech file to include this DRC.
+
+o Open sky130A.tech file in drc_tests directory. The included rules for poly.9 are only 
+for the spacing between the n-poly resistor with n-diffusion and the spacing between 
+the p-poly resistor with diffusion. We will now add new rules for the spacing between 
+the poly resistor with poly non-resistor. Highlighted in green below are the two newly 
+added rules. First one is the rule for the spacing between the p-poly resistor with poly 
+non-resistor and the next one is the rule for spacing between n-poly resistor with 
+poly non-resistor. The allpolynonres is a macro under alias section of techfile.
+
+<img width="628" height="207" alt="image" src="https://github.com/user-attachments/assets/20d06a1d-bfd7-4610-8e99-23d5fabdc7c6" />
+
+<img width="580" height="313" alt="image" src="https://github.com/user-attachments/assets/4d63ff50-db72-472d-b593-4fe33e659176" />
+o In tkcon window: tech load sky130A.tech to check drc in tkcon window: drc check 
+The new DRC rules will now take effect.
+
+<img width="628" height="498" alt="image" src="https://github.com/user-attachments/assets/0e9a3557-e29e-4b27-ad15-c972af6227f3" />
+
+6. Lab exercise to implement poly resistor spacing to diff and tap 
+To fix what is hown in below pic, modify the tech file to include not only the spacing between 
+npolyres with N-substrate diffusion in poly.9 but also between npolyres and all types of 
+diffusion.
+
+Pre-layout timing analysis and importance of good clock tree
+
+Lab steps to convert grid info to track info
+
+
+sky130_inv.mag contains all information like PG information, port information, logic etc. OpenLANE is 
+a PnR tool and a PnR tool does not require all the information present in .mag file. The only 
+information that we'll be needing is the boundary, power and ground rails, and the inputs & outputs. 
+This is the reason of using .lef files. So the objective is to extract the LEF file from Magic file and plug 
+into picorv32a design. 
+From PnR point of view, there are few guidelines to be followed while making standard cell, 
+• The input and output ports lies at the intersection of the horizontal and vertical tracks 
+(ensure the routes can reach that ports). 
+• The width of the standard cell must be odd multiple of the tracks horizontal pitch and height 
+must be odd multiples of tracks vertical pitch 
+Tracks refer to the horizontal and vertical metal layers on which routing occurs. The grid formed by 
+the intersection of horizontal and vertical tracks creates a routing grid, also known as a routing 
+matrix. The 
+~/Desktop/work/tools/openlane_working_dir/pdks/sky130A/libs.tech/openlane/sky130_fd_sc_hd/trac
+ks.info contains track information. 
+Before changing grid:
+
+<img width="778" height="379" alt="image" src="https://github.com/user-attachments/assets/8fcf2450-8298-41a5-a61b-5ffb95310abc" />
+
+After changing grid values: 
+
+<img width="768" height="246" alt="image" src="https://github.com/user-attachments/assets/dc9ae7bc-bb8d-4d00-a92c-9c9a732a1afa" />
+
+Second requirement is satisfied in below picture. 
+
+<img width="789" height="353" alt="image" src="https://github.com/user-attachments/assets/89361025-7746-44ed-b895-5e5b30e8d04a" />
+
+Lab steps to convert magic layout to std cell LEF 
+
+LEF (Library Exchange Format) file is a standard file format used to describe the physical layout and 
+characteristics of standard cell libraries or macro libraries. LEF files contain detailed information 
+about the geometric shapes, sizes, layers, and other physical properties of individual cells or macros 
+within the library. The instructions to set the port definitions are in this site 
+Next, save the .mag file with a new filename. In the tcon terminal: lef write  
+It will generate a LEF file with the new filename. 
+
+Introduction to timing libs and steps to include new cell in synthesis 
+
+Inside pdks/sky130A/libs.ref/sky130_fd_sc_hd/lib/ are the liberty timing files for SKY130 PDK which 
+contains the timing and power parameters for each cell needed in STA. It can either be slow, typical, 
+fast with different supply voltages (1v80, 1v65, 1v95). These are called PVT corners. The library name 
+sky130_fd_sc_hd__ss_025C_1v80 describes the PVT corner as slow-slow (delay is maximum), 25° 
+Celsius temperature, at 1.8V power supply. Timing and power parameter of a cell is obtained by 
+simulating the cell in a variety of operating conditions (different corners) and these data are 
+represented in the liberty file. The liberty file characterizes all cells and is used during ABC mapping 
+during synthesis stage which maps the generic cells to the actual standard cells available in the 
+liberty file.
+
+1. Copy the extracted lef file sky130_vsdinv.lef and the liberty files sky130*.lib from 
+/openlane/vsdstdcelldesign/libs to the src directory of picorv32a.
+
+2.Add the folowing to config.tcl inside the picorv32a: 
+<img width="774" height="110" alt="image" src="https://github.com/user-attachments/assets/2a5bdbf7-b1a0-42a2-baa4-137e62847b8c" />
+
+This sets the liberty file that will be used for ABC mapping of synthesis (LIB_SYNTH) and for 
+STA (_FASTEST,_SLOWEST,_TYPICAL) and also the extra LEF files (EXTRA_LEFS) for the 
+customized inverter cell.
+
+3. Run docker and prepare the design picorv32a. Plug the new lef file to the OpenLANE flow. 
+docker 
+./flow.tcl -interactive 
+package require openlane 0.9 
+prep -design picorv32a 
+set lefs [glob $::env(DESIGN_DIR)/src/*.lef] 
+add_lefs -src $lefs
+
+4. Next run_synthesis. sky130_vsdinv cell is successfully included in the design
+   
+<img width="775" height="237" alt="image" src="https://github.com/user-attachments/assets/1d880afd-7ad3-49dd-809e-895bf22d5728" />
+
+<img width="648" height="129" alt="image" src="https://github.com/user-attachments/assets/7245b8c6-797a-4b3f-817a-4b499fa32665" />
+
+Delay tables 
+
+Whenever the enable pin is 1, only then the CLK will propogate to Y in case of AND gate and 
+whenever the enable pin is 0, only then the CLK will propogate to Y in case of OR gate, as shown 
+below. When the enable is 1, the CLK will not propagate and there won't be any short circuit power 
+consumption and switching power consumption when such elements are used in clock tree. This 
+method is referred to as the clock gating technique. 
+
+Consider the below clock tree structure. 
+<img width="767" height="222" alt="image" src="https://github.com/user-attachments/assets/7f1a8f10-7317-49e0-8afa-dd5def7b2f89" />
+
+Buffers on different levels have different capacitive loads and buffer sizes but as long as they have 
+the same loads and sizes in the same level, the total delay for each clock tree path will be the same 
+thus skew will remain zero. Practically, different levels can have varying input transition and output 
+capacitive load and hence varying delay. 
+Delay tables are used to capture the timing model of each cell and is included inside the liberty file. 
+The main factor in delay is the output slew. The output slew depends on capacitive load and input 
+slew. The input slew is a function of previous stage buffer's output capacitive load and input slew 
+and has its own transition delay table. 
+
+<img width="779" height="377" alt="image" src="https://github.com/user-attachments/assets/183e4515-6dee-4494-9bc6-bacd726d5b2b" />
+
+At level 2, both the buffers have identical delays with same transition times, load capacitances, and 
+buffer sizes. Consequently, the skew is maintained at 0.If this is not the case, then the skew will be 
+negative leading to timing violations. While these considerations may seem insignificant when 
+analyzing the delay of just two buffers, their significance is high in designs featuring millions of cells. 
+Failing to adhere to these guidelines during clock tree creation can lead to numerous timing-related 
+complications. 
+Terminologies: 
+• CTS is the process of designing a clock distribution network to minimize skew and ensure 
+synchronous operation of the circuit 
+• Skew refers to the variation in clock signal arrival times 
+• Latency is the delay experienced by the clock signal 
+• Slew rate is the rate of change of the signal's voltage over time 
+
+Lab steps to configure synthesis settings to fix slack 
+
+Currently, tns = -711.59 wns = -23.89 Chip area for module picorv32a = 147712.9184 
+Next step is to see if synthesis can be more timing-driven.
+
+1. Check synthesis strategy and other timing related variables and modify accordingly 
+SYNTH_STRATEGY of delay 0 means the tool will focus more on optimizing the delay, index 
+can be 0, 1, 2, or 3 where 3 is the most optimized for timing at the cost of area. 
+SYNTH_BUFFERING of 1 ensures buffer will be used on high fanout cells to reduce wire delay. 
+SYNTH_SIZING of 1 will enable cell sizing where cell will be upsized or downsized as needed 
+to meet timing. SYNTH_DRIVING_CELL is the cell used to drive the input ports and is vital for 
+cells with a lot of fan-outs since it needs higher drive strength.
+
+
+2. Run synthesis again and it is seen that area is increased but there is no negative slack 
+tns = 0 wns = 0 Chip area for module picorv32a = 209181.872
+
+
+
+
+3. Run floorplan and placement 
+If any error comes related to macro placement, temporary solution is to comment 
+basic_macro_placement inside the OpenLane/scripts/tcl_commands/floorplan.tcl (this is okay 
+since we are not adding any macro to the design).
+
+init_floorplan 
+place_io 
+global_placement_or 
+detailed_placement 
+tap_decap_or 
+detailed_placement 
+
+After successful run, runs/[date]/results/placement/picorv32a.placement.def will be created.
+
+
+<img width="769" height="465" alt="image" src="https://github.com/user-attachments/assets/b79d087f-d30b-4b9e-acdc-1bccd8c0327a" />
+
+Search for instance of cell sky130_vsdinv inside the DEF file after placement stage: cat 
+picorv32a.placement.def | grep sky130_vsdinv 
+Select a single sky130_vsdinv cell instance from the list dumped by grep (e.g. 41096). On 
+tkcon, command % select cell 41096 then ctrl+z to zoom into that cell. As shown below, our 
+customized inverter cell sky130_myinverter is sucessfully placed. Use expand on tkon to show 
+the footprint of the cell and notice how the power and ground of sky130_vsdinv overlaps the 
+power and ground pins of its adjacent cells.
+
+
+<img width="781" height="246" alt="image" src="https://github.com/user-attachments/assets/09f4ef68-dccf-4dce-85c4-037a0704fddc" />
+
+
+<img width="780" height="420" alt="image" src="https://github.com/user-attachments/assets/d911cd14-c4e6-4465-bc30-27d0433988e9" />
+
+
+<img width="775" height="334" alt="image" src="https://github.com/user-attachments/assets/1e928c78-fcbd-4121-80a6-269aa85da2a9" />
+
+# Timing analysis with ideal clocks using openSTA 
+
+Setup timing analysis and introduction to flip-flop setup time
+
+Consider an ideal clock where clock tree is not built and perform timing analysis to understand the 
+parameters. Later the same can be done using real clocks. Specifications are as mentioned in the 
+picture. Clock frequncy (F) is 1GHz and clock period (T) is 1ns.
+
+
+<img width="622" height="433" alt="image" src="https://github.com/user-attachments/assets/7c2d5330-5b7e-4bdf-b3e8-9913e855a2a2" />
+
+
+
+<img width="771" height="311" alt="image" src="https://github.com/user-attachments/assets/91b1dc04-22e2-4074-9f62-a4bfeaf22599" />
+
+Setup timing analysis equation is: 
+Θ < T - S 
+Θ = Combinational delay which includes clk to Q delay of launch flop and internal propagation delay 
+of all gates between launch and capture flop 
+T = Time period, also called the required time 
+S = Setup time. As demonstrated below, signal must settle on the middle (input of Mux 2) before 
+clock tansists to 1 so the delay due to Mux 1 must be considered, this delay is the setup time.
+
+
+Introduction to clock jitter and uncertainty
+
+Clock is beign created by PLL (Phase Locked Loop). So, this clock source is expected to send clock 
+signal at 0, T, 2T etc. Even these clock sources might or might not be able to provide a clock exactly 
+at Tns because of its own in-built variation. That is called as the jitter. Jitter can be manifested as 
+short-term fluctuations in the timing of signal transitions, resulting in deviations from the expected 
+clock or data timing.
+
+
+<img width="781" height="431" alt="image" src="https://github.com/user-attachments/assets/ded3846b-46c8-4e40-8170-f1de34035ef2" />
+
+
+<img width="780" height="141" alt="image" src="https://github.com/user-attachments/assets/736e3950-87b6-4ca2-b63e-e00636932120" />
+
+So, a more realistic equation for setup time is, 
+Θ < T - S - SU 
+SU = Setup uncertainty due to jitter which is temporary variation of clock period. This is due to non
+idealities of PLL/clock source.
+
+
+<img width="771" height="502" alt="image" src="https://github.com/user-attachments/assets/7612cb55-e0b2-4f50-b088-cfa5dc086f0c" />
+
+# Clock Tree Synthesis TritonCTS and signal integrity 
+
+Clock tree routing and buffering using H-Tree algorithm 
+
+Consider the clock port that goes to the flip-flops highlighted in the picture. The purpose is to 
+connect the port to the clock pins of the flip-flops based on the connectivity information. If we 
+blindly connect as shown in the picture below, then t2>t1 and the difference t2-t1 is nothing but 
+the skew. Clock skew refers to the variation in arrival times of the clock signal at different points 
+within a synchronous digital system. In simpler terms, it is the difference in propagation delay 
+experienced by the clock signal as it travels along different paths within the system. Clock skew can 
+occur due to various factors such as differences in wire lengths, variations in signal routing paths, 
+variations in buffer delays, and other physical and environmental factors. These variations can lead to 
+some parts of the system receiving the clock signal earlier or later than others. Minimizing clock skew 
+is essential to ensure proper synchronization of signals and reliable operation of the digital circuit. 
+Ideally, the skew should be zero.
+
+
+<img width="779" height="378" alt="image" src="https://github.com/user-attachments/assets/5c675630-6510-4957-9b51-4091305bd6c3" />
+
+
+<img width="771" height="425" alt="image" src="https://github.com/user-attachments/assets/45d800b4-29d9-4d56-9dd8-e6f663ec4695" />
+
+In the above scenario, the skew is not less/zero, so it is a bad tree. 
+H-Tree is the solution. It analyses the clock route by calculating the distance from the source to all 
+the endpoints and deciding on a midpoint to start building tree from that point. In this case, the 
+clock reaches at all the endpoints at almost the same time.
+
+
+<img width="777" height="478" alt="image" src="https://github.com/user-attachments/assets/94f09b5a-e5be-4e47-a753-046294597a97" />
+
+We expect that whatever input is provided, that should be reproduced at the output. However, due 
+to the inherent resistance and capacitance in physical wires, the signal may experience attenuation or 
+distortion, hindering its proper transmission to the output. To address this, repeaters or buffers are 
+inserted along the path to ensure signal integrity and reliable transmission.
+
+The key difference between repeaters used in clock paths and those used in data paths lies in their 
+rise and fall times. Clock buffers have same rise and fall times, ensuring uniform signal propagation 
+throughout the clock distribution network. In contrast, data buffers exhibit varying rise and fall times, 
+which may differ based on the characteristics of the data being transmitted and the components 
+involved in processing it.
+
+Crosstalk and clock net shielding 
+
+Clock nets are critical nets in the design because clock tree is built is such a fashion that the skew is 
+zero. There is a phenomenon called crosstalk where a signal transmitted on one channel 
+unintentionally interacts with or interferes with signals on adjacent channels leading to distortion, 
+noise, timing errors etc. If this happens on clock routes, then the clock tree structure will be 
+deteriorated. So all the clock nets are shielded. By shielding, the clock nets are protected. If there is a 
+wire adjacent to such shields, then there exists a huge coupling capacitance cauign two issues. One is 
+glitch and the other is delta delay. 
+
+Whenever there is a switching activity happening on the aggressor, the coupling capacitance is so 
+strong that it directly affects the net sitting close to it called the victim net. the victim net is without 
+any shielding. As a result, there is a dip in the voltage, resulting in glitch.
+
+
+<img width="778" height="429" alt="image" src="https://github.com/user-attachments/assets/5c0cef51-bf39-4a1e-8a0f-a488917d8d91" />
+
+Shielding basically protects the victim nets by breaking the coupling capacitance between the 
+aggressor and the victim. These shielding nets are either Vdd or Vss. The shields do not switch, so 
+the victim will not switch.
+
+
+<img width="778" height="451" alt="image" src="https://github.com/user-attachments/assets/e1c930df-c1ec-4955-b177-28974d62e574" />
+
+Lab steps to run and verify CTS using TritonCTS 
+
+After ECO of cell sizing, currently the timing is as follows. 
+image
+The slack might increase or decrease as we move forward in the PnR flow. For OpenLANE to use the 
+current netlist, 
+image
+write_verilog filename overwrites the current verilog file in the specified location. 
+Then, 
+run_floorplan 
+run_placement 
+Then run cts using the command run_cts. Before that we need to check the default setting s that 
+CTS uses. 
+image
+In CTS stage, clock buffers get added.
+
+OpenLANE takes the procs 
+from ~/Desktop/work/tools/openlane_working_dir/openlane/scripts/tcl_commands. 
+These procedures will then call OpenROAD to run the actual tool.
+
+For example, run_cts can be found in the file /OpenLane/scripts/tcl_commands/cts.tcl, this 
+tcl procedure will call OpenROAD and will call /OpenLane/scripts/openroad/cts.tcl which 
+contains the OpenROAD commands to run TritonCTS. 
+Inside the /OpenLane/scripts/openroad/cts.tcl contains the configuration variables for CTS 
+such as: 
+CTS_CLK_BUFFER_LIST = list of clock buffers used in clock tree branches (sky130_fd_sc_hd__clkbuf_1 
+sky130_fd_sc_hd__clkbuf_2 sky130_fd_sc_hd__clkbuf_4 sky130_fd_sc_hd__clkbuf_8) 
+CTS_ROOT_BUFFER = clock buffer used for the root of the clock tree and is the biggest clock buffer 
+to drive the clock tree of the whole chip (sky130_fd_sc_hd__clkbuf_16) 
+CTS_MAX_CAP = maximum capacitance of the output port of the root clock buffer
+
+Timing analysis with real clocks using openSTA 
+
+Setup timing analysis using real clocks 
+Now the clock tree is built and timing analysis is done on real clocks. 
+
+
+<img width="773" height="338" alt="image" src="https://github.com/user-attachments/assets/79af1415-0c61-47cd-9b8c-1d8dd2aefb71" />
+
+
+delta1 = launch flop clock network delay delta2 = capture flop clock delay 
+delta2=capture flop clock delay
+
+
+<img width="779" height="374" alt="image" src="https://github.com/user-attachments/assets/a5dcbcde-fbb6-488f-81da-ee082b339f73" />
+
+Any design satisfying Slack = Data required time - Data arrival time is ready to work in 
+the given frequency. If this equation is violated , then slack will become negative. We expect slack to 
+be 0 or positive.
+
+Hold timing analysis using real clocks 
+
+Hold analysis refers to the delay/time required by the MUX2 model within the flip-flop to transfer 
+data outside. It denotes the duration during which the launch flop must retain data before it reaches 
+the capture flop. Unlike setup analysis, which spans two rising clock edges, hold analysis occurs on 
+the same rising clock edge for both the launch and capture flops. A hold violation occurs when the 
+path is too fast, impacted by factors including combinational delay, clock buffer delays, and hold 
+time. Notably, parameters such as time period and setup uncertainty hold no significance, as both 
+launch and capture flops receive identical rising clock edges during hold analysis.
+
+
+<img width="782" height="373" alt="image" src="https://github.com/user-attachments/assets/dad55ce1-4393-4528-97c9-bfa9ba71bd9d" />
+
+
+<img width="775" height="400" alt="image" src="https://github.com/user-attachments/assets/e6ae2dd3-3d01-423d-9c00-635feae89e78" />
+
+Skew = Launch Clock Network Delay - Capture Clock Network Delay 
+
+Lab steps to analyze timing with real clocks using OpenSTA 
+
+The objective is to analyse the clock tree. Entering into openroad instead of invoking a separate 
+OpenSTA tool. In openroad, timing analysis is done in a different way, where a db is created from lef 
+& def and used. 
+
+1. To create the db, read lef
+   
+
+<img width="767" height="133" alt="image" src="https://github.com/user-attachments/assets/a7ad0ee9-782a-4251-9b6f-9f9c4a9dbff6" />
+
+2. Read def from cts stage
+
+
+<img width="762" height="214" alt="image" src="https://github.com/user-attachments/assets/5105d1fa-6c2f-4f9d-9c5f-ff668897d9ef" />
+
+3. Create db
+
+
+<img width="771" height="241" alt="image" src="https://github.com/user-attachments/assets/96959330-370b-4f31-a456-b977c7ac3c85" />
+
+4. Read the db, verilog file, libraries, sdc
+
+
+<img width="748" height="242" alt="image" src="https://github.com/user-attachments/assets/d9305e2b-06d1-4ced-a2a1-45fe8aa15d1f" />
+
+5.Check timing 
+
+
+<img width="775" height="558" alt="image" src="https://github.com/user-attachments/assets/108d49e2-8d4e-4257-812e-41f54c73d5ab" />
+
+
+
+<img width="776" height="766" alt="image" src="https://github.com/user-attachments/assets/99c55bb8-5181-4902-b9b4-5da7b368c85d" />
+
+Lab steps to execute OpenSTA with right timing libraries 
+
+TritonCTS is built to optimise based on one corner but the libraries that are included in the previous 
+section for timing analysis are min and max corners. This kind of analysis is not accurate. So, exit and 
+re-enter openroad and check timing only for typical corner. 
+
+ 
+In this typical scenario, slack is met in both setup and hold analysis. 
+
+
+<img width="772" height="281" alt="image" src="https://github.com/user-attachments/assets/b08515f5-c875-4905-82cc-2a2429bdda78" />
+
+
+<img width="772" height="301" alt="image" src="https://github.com/user-attachments/assets/7b070a5a-2f5d-4fa4-9454-d58b712221d3" />
+
+When CTS is built, skew values is tried to be met by inserting buffers from the CTS_CLK_BUFFER_LIST. 
+We can also modify this list based on requirements. 
+When TritonCTS is building the clock tree, it tries to use each buffer listed 
+in $::env(CTS_CLK_BUFFER_LIST) (sky130_fd_sc_hd__clkbuf_1 
+sky130_fd_sc_hd__clkbuf_2 sky130_fd_sc_hd__clkbuf_4 
+sky130_fd_sc_hd__clkbuf_8) from smallest to largest until the target skew is met. Target skew is 
+stored in $::env(CTS_TARGET_SKEW). The STA result shows that sky130_fd_sc_hd__clkbuf_1 is the 
+mostly used buffer, we can also change the $::env(CTS_CLK_BUFFER_LIST) to use other buffers 
+and observe the effect on STA and area. 
+Use tcl lreplace command to modify $::env(CTS_CLK_BUFFER_LIST) 
+image
+The $::env(CURRENT_DEF) used by CTS is the DEF file of the previously run CTS, but the DEF file 
+we want for CTS is the placement's DEF file. So change the $::env(CURRENT_DEF) to point to 
+placement DEF file then run_cts. 
+Observe the resulting post-CTS STA compared to previous run since we modified the clock buffer. 
+Only buf_2 clock buffer is used now compared to buf_1 used in previous run. The WNS is better now 
+since we used bigger clock buffers.
+
+Final steps for RTL2GDS using tritonRoute and openSTA 
+
+Routing and design rule check (DRC) 
+
+Introduction to Maze Routing 
+Routing is to find the best possible connection/route between two points. There are many routing 
+algorithms like Steiner Tree algorithm, Line Search algorithm etc. and one such is Maze Routing - 
+Lee's Algorithm (Lee 1961) 
+Consider and example of connecting two points 1 & 2. Point 1 will act as a source and 2 will act as a 
+target. The requirement is to find the best possible path or the shortest possible path to connect 1 & 
+2 will less or no zig-zag routes. Mostly the routes are L-shaped. From algorithmic point of view, the 
+software has to search and connect the two points. From physical designer point of view, it is a 
+physical path/wire establishment for signals to travel between components.
+
+Lee's maze routing algorithm, is a popular pathfinding algorithm used in maze routing, which is a 
+type of routing problem where the goal is to find a path from a source to a destination in a maze
+like grid. The Lee algorithm is particularly well-suited for routing on grids or mesh-based structures 
+in integrated circuit design. 
+Algorithm steps: 
+1. Initialization: The algorithm starts by initializing a routing grid or matrix representing the 
+maze. Each cell in the grid can be one of several states: obstacle, empty, source, destination, 
+or visited. The source cell is marked with a value of 0, indicating that it is the starting point.
+
+
+<img width="439" height="282" alt="image" src="https://github.com/user-attachments/assets/400e66e8-c00e-4ec7-8924-cd6e8cf966f1" />
+
+2. Wave Expansion: The algorithm performs a wave expansion from the source cell, spreading 
+outwards in all directions. At each step, the algorithm examines neighboring cells (up, down, 
+left, and right) and assigns them a value one greater than the minimum value of their 
+neighboring cells (excluding obstacles). This process continues until the destination cell is 
+reached or until no more cells can be visited.
+
+
+<img width="437" height="367" alt="image" src="https://github.com/user-attachments/assets/7f0b6fdf-2d78-4c4b-8476-4bf102e501e1" />
+
+3. Backtracking and Path Reconstruction: Once the destination cell is reached, the algorithm 
+traces back the path from the destination to the source by following the values in each cell. 
+This results in the shortest path from the source to the destination. There might be multiple 
+paths but the best path that the tool will choose is one with less bends. The route should not 
+be diagonal and must not overlap any blockage/obstruction such as macros or HIPs.
+
+
+<img width="432" height="358" alt="image" src="https://github.com/user-attachments/assets/91bf7586-892e-4fc4-8c76-895b7fdd82ac" />
+
+Design Rule Check 
+
+When routing, it's not merely about connecting two points; we must also adhere to specific rules. 
+These rules, for example, mention that when constructing two wires, there must be a minimum 
+spacing or distance between them, minimum wire width, minimum wire pitch etc. Hence, DRC 
+cleaning is done to ensure the=at the routes can be fabricated and printed in silicon faithfully. 
+image
+Signal short is also one of the critical issues as it causes functionality failure. It can be eliminated by 
+moving the route to next layer with vias. This can lead to more DRCs (via width, via spacing, higher 
+metal layer must be wider than lower metal layer etc.).
+
+<img width="772" height="483" alt="image" src="https://github.com/user-attachments/assets/86245737-ffc9-436a-9f8d-fddb92dff112" />
+
+
+<img width="777" height="390" alt="image" src="https://github.com/user-attachments/assets/4c5fb4a7-3ba3-4fd9-a6e8-56daa24b1466" />
+
+
+Power Distribution Network and routing 
+Lab steps to build power distribution network 
+1. Go to openlane directory 
+2. docker 
+3. ./flow.tcl -interactive 
+4. package require openlane 0.9 
+5. prep -design picorv32a -tag 19-03_16-40 (this is the folder till cts has been done) 
+6. echo $::env(CURRENT_DEF) /openLANE_flow/designs/picorv32a/runs/19-03_16
+40/results/cts/picorv32a.cts.def 
+7. To generate PDN: gen_pdn
+
+
+Lab steps from power straps to std cell power    
+
+The power and ground rails have a pitch of 2.72um and hence the reason reason why the custom 
+inverter cell has a height of 2.72um, else the power and ground rails will not be able to power the 
+cell. Looking at the LEF file runs/[date]/tmp/merged.lef, it is noticed that all cells are of height 
+2.72um and only width differs. 
+As shown below, power/ground pads -> power/ground ring-> power/ground straps -> 
+power/ground rails to power up the standard cells. 
+
+
+<img width="773" height="371" alt="image" src="https://github.com/user-attachments/assets/0b1092d6-9ec6-40e6-baf3-163c23c340d3" />
+
+Basics of global and detail routing and configure TritonRoute 
+
+TritonRoute is the engine that is used for routing. run_routing command does routing in 
+OpenLANE. 
+
+
+<img width="783" height="324" alt="image" src="https://github.com/user-attachments/assets/49c0ab97-7aa3-4210-a22a-b388f7f30c6f" />
+
+
+<img width="776" height="281" alt="image" src="https://github.com/user-attachments/assets/caf18197-67ff-4d65-925f-f9f80f1a37e2" />
+
+In the VLSI flow, the routing stage is highly critical and can be executed using either open-source or 
+commercial tools. This stage is divided into two phases: 
+1. Global Route / Fast Route: 
+o This is accomplished using fast routing techniques where the area to be routed is 
+partitioned into tiles or rectangles. Global routing establishes the initial framework 
+for routing paths. 
+2. Detail Route: 
+o This phase involves meticulous tracking routing techniques to complete the routing 
+process. Detailed routing fine-tunes and finalizes the paths to ensure proper 
+connectivity and compliance with design constraints.
+
+TritonRoute features 
+
+TritonRoute feature 1 - Honors pre-processed route guides: 
+M1 preferred direction is vertical and M2 preferred direction is horizontal. Whenever the tool 
+encounters a non preferred direction route, then it divides the route into unit width. This is called 
+splitting. The divided unit width sections that fall in the same line of preferred direction routes are 
+merged. The edges which are parallel to the preferred routing direction are bridged with the upper 
+layer, process caled as bridging. Non preferred routing guides are now converted into preferred 
+routing guides of M2.
+
+
+<img width="777" height="484" alt="image" src="https://github.com/user-attachments/assets/4ac749d3-c7eb-44af-a4cb-ddda03eaea8d" />
+
+TritonRoute feature 2 - Inter-guide connectivity: 
+M1 and M2 are connected at the purple colour areas. The tool will understand that there is overlap 
+area, then it will add via to connect M1 & M2.
+
+
+<img width="769" height="379" alt="image" src="https://github.com/user-attachments/assets/01388bf0-d5fa-49c3-a83c-67c85032f0b4" />
+
+TritonRoute feature 3 - intra- & inter-layer routing: 
+The preferred direction of the M1 layer is vertical, resulting in lines oriented vertically. The dashed 
+lines are referred to as panels, with each routing guide assigned to a specific panel. When routing 
+occurs within even-index panels, it's termed as intra-layer parallel panel routing. Initially, routing 
+takes place simultaneously in all even-index panels, followed by routing in odd-index panels. This 
+routing remains confined within a particular layer. Routing progresses from lower to upper layers, 
+ensuring the orderly flow of routing operations.
+
+
+<img width="775" height="383" alt="image" src="https://github.com/user-attachments/assets/b57b2bfc-f24d-456f-8edf-cb97a4235b58" />
+
+TritonRoute method to handle connectivity 
+
+
+<img width="772" height="212" alt="image" src="https://github.com/user-attachments/assets/1426c5ef-9870-4a2a-bdaa-0e09c8213f44" />
+
+
+<img width="769" height="360" alt="image" src="https://github.com/user-attachments/assets/b38c3289-1323-4894-8556-92bef433a2e6" />
+
+The Goal of MILP (Mixed Integer Linear Programming) algorithm is to find the optimal solution to 
+connect two Access point cluster.
+
+
+<img width="771" height="472" alt="image" src="https://github.com/user-attachments/assets/a9921dca-24cb-4804-8b8e-e4b2bc7e1dc5" />
+
+In the above algorithm, for each access point, cost is found. Then, a minimum spanning tree between 
+access points and cost. So, the algorithm says that minimal and most optimal point is nedded 
+between two APCs.
+
+Final files list post-route 
+
+With run_routing command, routing got completed. Both global routing (fast routing) and detail 
+routing are done. It takes multiple iterations to bring down the DRC violations to 0. routing strategy 
+was set to 0. In the intial iteration, the violation count was close to 25000 and at the 34th iteration, 
+the violations got resolved and became 0. The entire routing operation took nearly 25 minutes. 
+
+
+<img width="773" height="471" alt="image" src="https://github.com/user-attachments/assets/c9222495-de94-43d5-81e2-d4f325c48138" />
+
+A DEF file will be formed in runs/[date]/results/routing/picorv32.def. Open the DEF file of 
+routing stage in Magic.
+
+
+<img width="779" height="458" alt="image" src="https://github.com/user-attachments/assets/377da648-e002-4ef4-9551-f7d7ab6f9dbb" />
+
+Parasitic extraction: 
+OpenLane does not have any spef extraction tool, so we use a separate tool present in work/tools/ 
+directory. 
+1. Go to /home/vsduser/Desktop/work/tools 
+2. Inside that there is a folder named SPEF_EXTRACTOR 
+3. SPEF_EXTRACTOR contains a list of files, out of which there is a python file called main.py. It 
+helps to generate the SPEF provided there are lef & def files 
+4. To create SPEF file python3 main.py 
+/home/vsduser/work/tools/openlane_working_dir/openlane/designs/picorv32
+a/runs/26-03_05-49/tmp/merged.lef 
+/home/vsduser/work/tools/openlane_working_dir/openlane/designs/picorv32
+a/runs/26-03_05-49/tmp/routing/picorv32a.def 
+5. spef will be saved in the same location as def 
+file. /home/vsduser/work/tools/openlane_working_dir/openlane/designs/picor
+v32a/runs/26-03_05-49/tmp/routing 
+image
+The last stage will be to extract the GDSII file ready for fabrication run_magic 
+This uses Magic to stream the GDSII file runs/26-03_05-49/results/magic/picorv32a.gds. 
+This GDSII file can then be read by Magic: 
+image
+The PnR flow is done
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   
+
+   
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   
+
+
+
+
+
+
+
+
+
 
 
 
