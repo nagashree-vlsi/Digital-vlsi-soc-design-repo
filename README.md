@@ -15,14 +15,32 @@ stored in non-volatile memory (ROM or flash memory) and executed by the microcon
 CPU. 
 
 
+<img width="464" height="370" alt="image" src="https://github.com/user-attachments/assets/2d0c2770-c195-488d-9ba7-01c9feef5465" />
+
+
 The circled picture in the above image describes about the processor and its connectivity.
+
+
+<img width="388" height="223" alt="image" src="https://github.com/user-attachments/assets/b0b1ed76-7357-4fa1-9d3b-df44c2d46e6a" />
+
+
+
+
+
 
 The below picture refers to Package. The pin placements are determined by the Arduino board 
 under the development. The connectivity between the chip and the package are illustrated 
 through the wires which determines the transmission of signals in and out of the chip. 
 
 
+<img width="793" height="311" alt="image" src="https://github.com/user-attachments/assets/02bd337f-df61-42bc-8b65-1f4df2b22952" />
+
+
+
 Components: 
+
+<img width="674" height="382" alt="image" src="https://github.com/user-attachments/assets/a0b3d8d2-612b-4594-9ea9-d0eae3dbd048" />
+
 
 Pads: 
 • Pads refer to the interface between the chip and the outside world. They are the 
@@ -79,6 +97,10 @@ The RISC-V specifications have to be translated to hardware description language
 on layout. So, C Programming is executed and should get automatically executed by the 
 hardware to get the output.
 
+
+<img width="593" height="358" alt="image" src="https://github.com/user-attachments/assets/c1370656-627a-4e95-b83b-cc410e72446d" />
+
+
 From a software application to hardware, the concept of macros can 
 be understood in various contexts: 
 
@@ -120,7 +142,14 @@ in software applications, operating systems, programming languages, or hardware
 design, macros help streamline development processes and improve productivity.
 
 
+<img width="654" height="368" alt="image" src="https://github.com/user-attachments/assets/afa7f411-ab01-4d53-b35f-46d646198449" />
+
+
 Flow: Stopwatch app to Hardware 
+
+
+<img width="580" height="319" alt="image" src="https://github.com/user-attachments/assets/976ffa10-f021-4bfc-95d9-e58b82184994" />
+
 
 
 Flow: ISA->HDL->Netlist->Physical design 
@@ -130,6 +159,10 @@ Flow: ISA->HDL->Netlist->Physical design
 Introduction to all components of opensource digital asic design: 
 
 To design an ASIC, we require RTL designs, EDA tools and PDK data.
+
+
+<img width="737" height="370" alt="image" src="https://github.com/user-attachments/assets/5db814f9-cd05-4d56-81ba-95fe25a138cd" />
+
 
 
 
@@ -198,9 +231,19 @@ fabricate integrated circuits. These components play crucial roles in the design
 verification, and fabrication of electronic systems and ICs.
 
 
+<img width="720" height="319" alt="image" src="https://github.com/user-attachments/assets/40a860c5-2089-478a-9483-964a7c3ae503" />
+
+
+<img width="609" height="337" alt="image" src="https://github.com/user-attachments/assets/2e91327c-8fb5-4592-b698-96647da27b56" />
+
 
 
 #Simplified RTL2GDS flow
+
+<img width="724" height="350" alt="image" src="https://github.com/user-attachments/assets/7b40e715-d4af-417d-9e4b-f026034e1f82" />
+
+
+
 
 
 1.Synthesis: In the synthesis stage, the RTL description is translated into a gate-level netlist 
@@ -208,12 +251,20 @@ using synthesis tools. These tools map the RTL code to standard cell libraries p
 semiconductor foundry. The resulting gate-level netlist represents the circuit in terms of logic 
 gates and their interconnections.
 
+<img width="730" height="309" alt="image" src="https://github.com/user-attachments/assets/21b0a0b7-911a-4922-8982-69620573404d" />
+
+
+
 
 
 2. Floorplanning: Floorplanning involves partitioning the chip area into functional blocks and 
 allocating resources such as memory, logic cells, and I/O pads. The goal is to optimize the 
 physical layout of the chip to minimize signal delays, reduce power consumption, and meet 
 performance targets.
+
+
+<img width="732" height="380" alt="image" src="https://github.com/user-attachments/assets/85a8689f-9b91-47da-a90e-c3fde785da86" />
+
 
 
 
@@ -226,11 +277,20 @@ floorplan is overlaid with a grid of power and ground rails to distribute power 
 signals uniformly across the chip. Power planning tools determine the optimal placement of 
 power and ground lines to minimize resistance, reduce voltage drop, and mitigate noise.
 
+<img width="754" height="400" alt="image" src="https://github.com/user-attachments/assets/ca3a5b84-1cb5-424d-9e9e-1925be2c927d" />
+
+
 
 3.placement: In the placement stage, the synthesized and optimized logic cells are placed 
 within the chip's floorplan. Placement tools determine the physical locations of logic cells to 
 minimize wire lengths, reduce congestion, and satisfy timing constraints. Advanced placement 
 algorithms consider factors such as signal timing, power distribution, and thermal effects. 
+
+
+<img width="734" height="377" alt="image" src="https://github.com/user-attachments/assets/b170139b-6952-45c7-9a72-c3c62daedcb4" />
+
+
+<img width="731" height="394" alt="image" src="https://github.com/user-attachments/assets/ec7b158d-b159-48a5-8f88-94f05b2639d2" />
 
 
 4. Clock Tree Synthesis (CTS): Clock tree synthesis involves the generation of a 
@@ -239,10 +299,19 @@ chip. CTS tools optimize clock routing to minimize skew, ensure clock signal int
 and meet timing requirements.
 
 
-5. Routing: The routing stage involves the generation of physical metal interconnects 
+<img width="737" height="412" alt="image" src="https://github.com/user-attachments/assets/88197334-920f-4640-abac-8ea0ad04c4da" />
+
+
+
+
+6. Routing: The routing stage involves the generation of physical metal interconnects 
 (wires) to connect the placed logic cells according to the synthesized netlist. Routing 
 tools handle the complex task of routing signals while considering design rules, signal integrity, and timing constraints. Global routing establishes the overall routing topology, 
 while detailed routing handles the routing of individual metal tracks.
+
+
+<img width="732" height="379" alt="image" src="https://github.com/user-attachments/assets/47c06e65-5bbd-4197-b893-ab6561887d8a" />
+
 
 
 6.Sign off:Functional verification ensures that the design behaves correctly according 
@@ -251,7 +320,6 @@ and gate-level simulation, are used to verify the functionality of the design
 under various operating conditions and test scenarios. Functional 
 coverage analysis is performed to ensure that all functional aspects of the 
 design have been adequately exercised.
-
 
 
 
@@ -267,6 +335,10 @@ Netgen, CVC, SPEF-Extractor, KLayout and a number of custom scripts for design
 exploration and optimization.
 
 
+<img width="787" height="701" alt="image" src="https://github.com/user-attachments/assets/d69f9be0-1273-4244-8d66-b4926a61e6ae" />
+
+
+
 
 
 
@@ -276,21 +348,50 @@ violations, and no Timing violations) with no human intervention.
 #Introduction to OpenLANE detailed ASIC design flow
 
 
+<img width="721" height="323" alt="image" src="https://github.com/user-attachments/assets/4063e60f-b428-4cf7-bd89-20ae20c09f31" />
+
+
+
 1. Synthesis Exploration step involves generation of reports showing delay vs area
+
+
+<img width="715" height="319" alt="image" src="https://github.com/user-attachments/assets/55c15e8c-8610-4de5-aa67-f1570732827a" />
 
 2.Design Exploration step is used to sweep the design configuration and it's useful 
 to find best configuration for any given design.
 
+
+<img width="721" height="324" alt="image" src="https://github.com/user-attachments/assets/79bd660d-4f13-484b-a34f-7670d47e40b7" />
+
+
 3. OpenLANE Regression Testing
+
+
+<img width="730" height="375" alt="image" src="https://github.com/user-attachments/assets/4c27a448-8734-4153-a9a9-a8263b760886" />
 
 4.  Design for Test (DFT)
 
-5.  Physical verification (DRC & LVS)
+   <img width="730" height="375" alt="image" src="https://github.com/user-attachments/assets/2b099717-912c-4d1c-a21c-a456d4b12223" />
 
-6.   Logic Equivalence Check (LEC) checks the logic synchronisation between physical 
+
+6.  Physical verification (DRC & LVS)
+
+   <img width="740" height="373" alt="image" src="https://github.com/user-attachments/assets/2399ce75-9b37-4f0f-b728-eeddfd9e2a89" />
+
+
+8.   Logic Equivalence Check (LEC) checks the logic synchronisation between physical 
 implementation and the netlist.
 
+ <img width="715" height="310" alt="image" src="https://github.com/user-attachments/assets/ad5e048f-1f5d-48e2-8770-b0512cb0065d" />
+
+
 7.Dealing with Antenna Rules violations
+
+
+<img width="731" height="604" alt="image" src="https://github.com/user-attachments/assets/03a43ef5-1ef6-4e44-9342-8128ede6de46" />
+
+
+<img width="684" height="314" alt="image" src="https://github.com/user-attachments/assets/bd652f4a-6fad-4216-9003-e665bdaed2a6" />
 
 
 8. Static Timing Analysis (STA) ensures that the design meets timing requirements. 
@@ -304,7 +405,12 @@ the design, and timing constraints.
 
 #Getting familiar to open-source EDA tools:
 
- Openlane Directory structure in detail  
+ Openlane Directory structure in detail 
+
+
+<img width="699" height="578" alt="image" src="https://github.com/user-attachments/assets/18b83f9f-a0c7-434d-be50-9d5a8b136f8d" />
+
+ 
 
  • open-pdks contains scripts that makes the commerical PDK to also be compatible 
 with the open-source EDA tool 
@@ -327,9 +433,13 @@ design folder there is a config.tcl which has the default settings on OpenLANE.
 
 
 
+
 The priority order for the Openlane settings are: sky130_xxxxx_config.tcl in 
 OpenLane/designs/[design]/ config.tcl in OpenLane/designs/[design]/ default values in 
 OpenLane/configuration/
+
+
+<img width="773" height="127" alt="image" src="https://github.com/user-attachments/assets/3f75c84f-7a35-4c9e-9a26-0ba00d53de4b" />
 
 
 Setup the design stage for the flow and to begin with synthesis of a design 
@@ -398,14 +508,23 @@ interconnections. The width and height of the die correspond to the dimensions
 of the rectangular or square-shaped semiconductor substrate on which the 
 circuitry is fabricated.
 
+
 In summary, the width and height of the core and die of an integrated circuit refer to 
 the dimensions of the functional circuit area and the entire semiconductor substrate, 
 respectively. These dimensions are critical parameters in IC design and manufacturing, 
 ifluencing factors such as chip size, layout optimization, and packaging considerations.
 
 
+<img width="723" height="409" alt="image" src="https://github.com/user-attachments/assets/e57434d0-fbfb-4dcf-bf54-42eee6bc03d8" />
 
 
+
+
+<img width="753" height="393" alt="image" src="https://github.com/user-attachments/assets/2cf16634-d40d-46c4-b432-9108a179c05a" />
+
+
+
+<img width="713" height="404" alt="image" src="https://github.com/user-attachments/assets/6e5003af-0a9b-460a-b383-94e112a7006c" />
 
 
 
@@ -415,10 +534,19 @@ the wires are ignored and the flops and combinational logic are combined togethe
 get the total area. So, here, the area will be 4 sq.units. 
 
 
+<img width="775" height="356" alt="image" src="https://github.com/user-attachments/assets/8ce80db1-fed4-4a59-9137-b089d1d9d31d" />
+
+
+<img width="747" height="452" alt="image" src="https://github.com/user-attachments/assets/e5b8748f-50ee-4cd6-a002-a22a7c71e0a5" />
+
+
+
+<img width="767" height="365" alt="image" src="https://github.com/user-attachments/assets/6f11a6f1-935a-428e-ae13-3cbdc3de8738" />
 
 
 
 
+<img width="692" height="414" alt="image" src="https://github.com/user-attachments/assets/5ec9b5ea-f2c0-4e69-9bc3-b49970b1f69f" />
 
 
 Utilization factor = (4 x 1sq.unit) / (2 unit x 2 unit) = 1 
@@ -429,6 +557,8 @@ In this case, height and width are same, so the aspect ratio is 1 If the aspect 
 shows that the chip is square, otherwise it is rectangle. 
 Example: 
 
+
+<img width="754" height="275" alt="image" src="https://github.com/user-attachments/assets/060d3c29-8f21-4d2c-85bb-7e4f832bcbf3" />
 
 
 
@@ -456,6 +586,15 @@ Consider the following netlist being divided into two sets of blocks with connec
 preserved.
 
 
+<img width="757" height="395" alt="image" src="https://github.com/user-attachments/assets/424338f5-553b-4ba7-bbe2-d73683286d6f" />
+
+
+<img width="529" height="437" alt="image" src="https://github.com/user-attachments/assets/2e16f0a9-a199-47fc-830a-d1d8e86e7968" />
+
+
+
+<img width="566" height="428" alt="image" src="https://github.com/user-attachments/assets/65a410db-5d94-4ffd-a67a-9fb903e14922" />
+
 
 
 
@@ -465,11 +604,15 @@ reused.
 
 
 
+<img width="737" height="424" alt="image" src="https://github.com/user-attachments/assets/a15d647b-65a4-49f8-92a6-5827e5e8737e" />
+
 
 
 #De-coupling capacitors
 Surround pre-placed cells with decoupling capacitors
 
+
+<img width="561" height="420" alt="image" src="https://github.com/user-attachments/assets/06a08c3c-3c75-44d9-80dc-0982894ed81b" />
 
 
 
@@ -483,13 +626,19 @@ In reality, when the Vdd supplies voltage to the circuit, there is a drop due to
 inductance and capacitance of the wire and supplied volatge is Vdd'
 
 
+<img width="657" height="465" alt="image" src="https://github.com/user-attachments/assets/cd8fa1ad-410c-482b-a2ee-ab23987ee550" />
 
+
+
+<img width="646" height="285" alt="image" src="https://github.com/user-attachments/assets/dc884494-3143-4b5c-ae71-f48ee283b09b" />
 
 
 The Vdd' should be within the noise margin range which is from Vih to Voh. If it is present 
 somewhere in the undefined region, then the logic 1 is unstable. This is because of the large 
 physical distance from the main power supply to the circuit.
 
+
+<img width="658" height="454" alt="image" src="https://github.com/user-attachments/assets/07e41c75-2fd8-44f9-b3f6-a5d07138d179" />
 
 
 Solution to such problem is the addition of decoupling capacitors. We can consider 
@@ -498,15 +647,23 @@ voltage across the capacitor is same as seen across the main supply voltage. The
 decouples the circuit from the main supply.
 
 
+<img width="436" height="233" alt="image" src="https://github.com/user-attachments/assets/cd91812f-8a0e-4dd2-8d4f-2de643761eaa" />
+
+
+<img width="651" height="369" alt="image" src="https://github.com/user-attachments/assets/91dd65aa-46bd-4156-b414-fc74b16fde13" />
 
 #Power Planning 
 
 Consider the circuit as a macro and it demands more current. Say, it's used as a driver as well as load and the load should receive the same signal quality as the driver. 
 
 
+<img width="364" height="351" alt="image" src="https://github.com/user-attachments/assets/7af8660b-de48-4ec3-bcb3-defa1859efb5" />
+
 
 Decoupling capactor is not feasible to be added all over the chip but only on the critical elements.
 
+
+<img width="427" height="377" alt="image" src="https://github.com/user-attachments/assets/1bd32906-63cc-465d-9a91-51538b1c0279" />
 
 
 In the below picture, 1 means the capacitor is charged to V and 0 means the capacitor is discharged. 
@@ -519,11 +676,20 @@ The solution is to have multiple powersource taps (power mesh) where elements ca
 from the nearest Vdd and sink current to the nearest Vss tap.
 
 
+<img width="476" height="373" alt="image" src="https://github.com/user-attachments/assets/65938e5c-60b1-44de-bacf-61147bb59ba1" />
 
+
+
+<img width="483" height="344" alt="image" src="https://github.com/user-attachments/assets/a74915ab-d0b8-4b5d-906b-f1bfe45c6f0b" />
 
 Instead of single power supply as before, there are multiple Vdd and Vss lines. If a logic demands 
 current, it can tap current from the nearest power supply.
 
+
+<img width="470" height="379" alt="image" src="https://github.com/user-attachments/assets/159540ad-d2ff-4786-97d7-03106496d786" />
+
+
+<img width="546" height="406" alt="image" src="https://github.com/user-attachments/assets/08b90114-9eff-4114-901e-870e5a55b1f6" />
 
 
 # Pin placement and logical cell placement blockage
@@ -532,14 +698,20 @@ Let's take below design as an example to be implemented. The connectivity inform
 gates is coded usign VHDL or Verilog language and is called as netlist.
 
 
+<img width="449" height="417" alt="image" src="https://github.com/user-attachments/assets/25877ee6-0d35-4c20-aaee-1f21a8219128" />
+
 The input and output ports are placed on the left and right spaces between the core and the die. The 
 placements of the ports depends on where the cells are placed. The clock ports are bigger in size 
 than data ports since the clocks are driving the cells continuously. So, we need the least resistance 
 paths for the clocks. Bigger the size, lesser the resistance.
 
+<img width="554" height="304" alt="image" src="https://github.com/user-attachments/assets/e80f3ce7-b974-438e-8567-332ed4f8eee0" />
+
 
 Once pin/port placement is done, Logical Cell Placement Blockage is created to make sure that the 
 APR tool does not place any cell on the pin locations.
+
+<img width="574" height="405" alt="image" src="https://github.com/user-attachments/assets/0c5a7959-6744-460c-87c8-498d9e1d8ced" />
 
 
 # Steps to run floorplan using OpenLANE and view floorplan layout in Magic
@@ -559,6 +731,8 @@ The priority order from highest to lowest is as follows:
 • openlane/designs/[design]/config.tcl 
 • openlane/configuration/floorplan.tcl
 
+
+<img width="620" height="460" alt="image" src="https://github.com/user-attachments/assets/33bc22b1-6cde-4afd-817f-386b73257e43" />
 
 
 
@@ -583,6 +757,8 @@ Command: magic -T
 picorv32a.floorplan.def &
 
 
+<img width="577" height="333" alt="image" src="https://github.com/user-attachments/assets/76c3b188-c047-4c18-a6d8-cb6e5e7f885f" />
+
 
 Press "s" to select whole die then press "v" to center the view 
 
@@ -592,10 +768,14 @@ The IO pins are placed in a random equidistant mode as seen below based on the
 configuration (FP_IO_MODE = 1) set in openlane/configuration/floorplan.tcl
 
 
+<img width="593" height="400" alt="image" src="https://github.com/user-attachments/assets/cf6040ea-d785-40c4-86aa-a5c331feacce" />
+
 
 The components in the layout can be identified by using the "what" command in tkcon 
 window after selecting it.
 
+
+<img width="534" height="294" alt="image" src="https://github.com/user-attachments/assets/6147a94f-cb45-4f7b-81c7-17e3b9438338" />
 
 Standard cells are not placed but can be viewed at the bottom left corner of the layout
 
@@ -612,11 +792,15 @@ that the library has many flavors of cells.
 3. Placement:
 
 
+<img width="695" height="309" alt="image" src="https://github.com/user-attachments/assets/60e8b41f-536d-4768-ad19-58bd743cf92d" />
+
 
 
 Placement is done based on connectivity. For example, FF1 is close to Din1 pin and FF2 close 
 to Dout1 pin and combinational cells placed nearer to FF1 and FF2. This is to reduce delay.
 
+
+<img width="687" height="223" alt="image" src="https://github.com/user-attachments/assets/3b25a072-3d2a-4311-8f65-a049e8314839" />
 
 Optimize placement using estimated wire-length and capacitance 
 
@@ -624,6 +808,8 @@ This is the stage where we estimate wirelength and capacitance (C=EA/d) and inse
 on that. If the wirelength is more, then to maintain signal integrity, we add repeaters to reduce 
 resistance. Repeaters basically reconditions the original signal and transfers.
 
+
+<img width="691" height="421" alt="image" src="https://github.com/user-attachments/assets/9f436459-9e57-4952-bfb2-b916e68a7e0d" />
 
 
 
@@ -652,6 +838,8 @@ magic/sky130A.tech lef read ../../tmp/merged.lef def read
 picorv32a.placement.def &
 
 
+<img width="700" height="352" alt="image" src="https://github.com/user-attachments/assets/911fbdcd-0cf7-44d0-a3d9-9ce9576df989" />
+
 
 
 # Cell design and characterization flows 
@@ -661,6 +849,8 @@ The cells inside the library are of different flavors (different drive strengths
 voltage). If the cell size is more, then the drive strength is high to drive longer wires. If the threshold 
 voltage is high, then it will take more time to switch than the one with lesser threshold voltage. 
 
+
+<img width="699" height="435" alt="image" src="https://github.com/user-attachments/assets/f2a09c4d-b2e7-4d1a-a757-09a7b902e6d8" />
 
 
 • DRC & LVS Rules: tech files and poly substrate parameters 
@@ -687,6 +877,8 @@ Steps of characterization flow:
 
 
 
+<img width="611" height="581" alt="image" src="https://github.com/user-attachments/assets/04eafb91-7218-47df-afd6-47bcac58592c" />
+
 
 
 Timing characterization 
@@ -695,11 +887,21 @@ GUNA software workflow.
 We are taking inverters connected back to back as an example.
 
 
+<img width="677" height="214" alt="image" src="https://github.com/user-attachments/assets/cf8d42ed-8faa-48c0-9877-f4e51e0b7821" />
+
+
+<img width="592" height="321" alt="image" src="https://github.com/user-attachments/assets/204f2a62-a3b8-4488-88d3-bdeba2a4e8fd" />
+
+
 Timing thershold definitions: 
 
 
+<img width="463" height="360" alt="image" src="https://github.com/user-attachments/assets/468c6eeb-eb53-42ce-99d7-0608bf182a4b" />
+
 Two inverters in series, red is output of first inverter and blue is output of second inverter:
 
+
+<img width="660" height="401" alt="image" src="https://github.com/user-attachments/assets/c49b2dde-64f1-42ca-8d08-2ccb1225f4e9" />
 
 
 The red is input waveform and blue is output waveform of the buffer. The left side is rise delay and 
@@ -709,6 +911,9 @@ TRANSITION DELAY=time(slew_high_*_thr)-time(slew_low_*_thr)
 Negative propagation delay is not expected. This means that the output comes before the input so 
 it's important to choose correct threshold point to produce positive delay. Delay threshold is usually 
 50% and slew rate threshold is usually 20%-80%.
+
+
+<img width="677" height="365" alt="image" src="https://github.com/user-attachments/assets/072364d7-8007-4d17-80fd-ddb7176f466e" />
 
 
 # Design library cell using Magic Layout and ngspice 
@@ -726,6 +931,8 @@ However, changing the configuration on the fly will not change the runs/config.t
 will only be available on the current session.
 
 
+
+<img width="669" height="427" alt="image" src="https://github.com/user-attachments/assets/56a381e9-8acd-4f0d-ba18-49d3fe767464" />
 
 
 
@@ -751,6 +958,8 @@ SPICE deck:
 • name nodes
 
 
+<img width="689" height="356" alt="image" src="https://github.com/user-attachments/assets/9dd9f678-f6a0-4922-bb93-12a3680dd9ba" />
+
 
 
 SPICE deck netlist description: 
@@ -762,6 +971,9 @@ SPICE deck netlist description:
 0.05V steps 
 • tsmc_025um_model.mod is the model file containing the technological parameters for the 
 0.25um NMOS and PMOS
+
+
+<img width="686" height="324" alt="image" src="https://github.com/user-attachments/assets/25fc565c-acf8-4beb-9a55-2c0afe093668" />
 
 
 
@@ -777,8 +989,13 @@ specified in the spice deck
 both PMOS &NMOS is same.
 
 
+<img width="621" height="394" alt="image" src="https://github.com/user-attachments/assets/b16348d9-14f1-4a23-ba78-7fad52e71c24" />
+
+
 Switching Threshold Vm 
 
+
+<img width="654" height="393" alt="image" src="https://github.com/user-attachments/assets/62e8991b-2434-40c1-99f6-c835a0bd2717" />
 
 
 1. The shapes are almost the same which means that CMOS is a robust device. 
@@ -789,6 +1006,8 @@ leakage. There is a high possibility that the current flows directly from VDD to
 Due to this, short circuit kind of device is seen.
 
 
+<img width="626" height="420" alt="image" src="https://github.com/user-attachments/assets/f3f64d6c-54b1-4cbf-95c4-c47e0fe70efc" />
+
 
 • Propagation delay: rise or fall delay
 
@@ -798,6 +1017,8 @@ DC transfer analysis is used for finding switching threshold. Simulation is DC s
 with 0.05V steps: 
 When a pulse is applied to the CMOS, transient analysis is used to find propagation delay.
 
+
+<img width="676" height="409" alt="image" src="https://github.com/user-attachments/assets/e7cb10f4-7186-4311-9b32-501a5df26837" />
 
 
 
@@ -824,6 +1045,8 @@ Snippet of commands executed:
 
 Snippet of sky130_inv: 
 
+
+<img width="699" height="351" alt="image" src="https://github.com/user-attachments/assets/f7de82ee-dae3-4141-bc0f-6dbc57492f17" />
 
 # Inception of Layout CMOS fabrication process
 
@@ -859,6 +1082,8 @@ called Twintub process.
 4. Formation of gate terminal 
 Gate terminal is where the threshold voltage is controlled.
 
+
+<img width="695" height="337" alt="image" src="https://github.com/user-attachments/assets/dbc0a0b4-5b76-461f-863d-2ea67024eb4f" />
 
 
 o Deposit photo resist layer to define the areas to protect 
@@ -902,6 +1127,9 @@ o Titanium has less resistance and hence used
 o TiSi2 is used for local interconnects 
 o Mask 11 is formed and TiN is etched off using RCA cleaning to create first level 
 contact
+
+
+<img width="475" height="294" alt="image" src="https://github.com/user-attachments/assets/827178ab-b965-4372-b455-7ec4254b778c" />
 
 
 9. Higher level metal formation 
